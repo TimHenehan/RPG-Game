@@ -1,9 +1,8 @@
 RPG-Game
 ====
-Coding - Andy29485
-Story  - 
-Art    - 
-
+Coding - Andy29485  
+Story  -  
+Art    -  
 TODO
 ===
-Everything
+Basically Everything
