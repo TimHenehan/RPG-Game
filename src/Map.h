@@ -1,0 +1,144 @@
+///////////////////////////////////////////////////////////////////////
+// Map.h
+// This file is part of NAME_TBD
+//
+// Copyright (C) 2014 - Andriy Zasypkin
+//
+// NAME_TBD is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// NAME_TBD is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with NAME_TBD. If not, see <http://www.gnu.org/licenses/>.
+///////////////////////////////////////////////////////////////////////
+
+#ifndef __MAP_H__
+#define __MAP_H__
+
+// Headers
+#include "Tile.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+typedef std::vector <Tile>   Tile_Vec;
+
+class Map : public sf::Drawable {
+private:
+
+  ////////////////////////////////////////////////////////////
+  // A 2D vector of Tiles that make up the map
+  ////////////////////////////////////////////////////////////
+  std::vector <Tile_Vec> tiles;
+  
+  ////////////////////////////////////////////////////////////
+  // The location of map relitive to window
+  ////////////////////////////////////////////////////////////
+  locationD_t location;
+  
+  ////////////////////////////////////////////////////////////
+  // Used to render the map faster
+  ////////////////////////////////////////////////////////////
+  sf::RenderTexture renderTexture;
+  
+public:
+  ////////////////////////////////////////////////////////////
+  // Default constructor
+  ////////////////////////////////////////////////////////////
+  Map();
+  
+  ////////////////////////////////////////////////////////////
+  // 2 arg constructor
+  //
+  // \param (int) Width  of map in # of Tiles( >= 1)
+  // \param (int) Height of map in # of Tiles( >= 1)
+  ////////////////////////////////////////////////////////////
+  Map(int, int);
+  
+  ////////////////////////////////////////////////////////////
+  // Virtual destructor
+  ////////////////////////////////////////////////////////////
+  virtual ~Map() {};
+  
+  ////////////////////////////////////////////////////////////
+  // Access a row(vector) of Tiles
+  //
+  // \param (int) the row of Tiles that you want to access
+  //
+  // \return Tile_Vec - a vector of Tile class
+  ////////////////////////////////////////////////////////////
+  Tile_Vec& operator[] (int);
+  
+  ////////////////////////////////////////////////////////////
+  // Get the location of the current Map in the window such
+  //    that (0, 0) is the top left Tile
+  //    and  (size_of_map - 1, size_of_map - 1) is bottom right
+  // 
+  // \return the location of Tile as struxt with x and y ints
+  ////////////////////////////////////////////////////////////
+  locationD_t getLocation();
+  
+  ////////////////////////////////////////////////////////////
+  // Return the size of map
+  //
+  // \return (size_t) width of map x
+  ////////////////////////////////////////////////////////////
+  size_t size();
+  
+  ////////////////////////////////////////////////////////////
+  // Re-draw the 
+  ////////////////////////////////////////////////////////////
+  void redraw();
+  
+  ////////////////////////////////////////////////////////////
+  // Resize the size of the map
+  //
+  // \param (int) Width  of map in # of Tiles( >= 1)
+  // \param (int) Height of map in # of Tiles( >= 1)
+  ////////////////////////////////////////////////////////////
+  void resize(int, int);
+  
+  ////////////////////////////////////////////////////////////
+  // Move the map on the screen
+  // 
+  // \param (int) x shift right
+  // \param (int) y shift down
+  // 
+  // \return ture if map was moved, false otherwise
+  ////////////////////////////////////////////////////////////
+  bool move(int, int, sf::RenderWindow&);
+  
+  ////////////////////////////////////////////////////////////
+  // Save the contents of map to file
+  //
+  // \param (std::string) name of file to save map to
+  // \param (int) (optional) start of map data (default 0)
+  //
+  // \return the position of the next 
+  ////////////////////////////////////////////////////////////
+  std::streampos load(std::string, std::streampos);
+  
+  ////////////////////////////////////////////////////////////
+  // Load the contents of map from file
+  //
+  // \param (std::string) name of  file to load map from
+  // \param (bool) (optional) append to file (default false)
+  ////////////////////////////////////////////////////////////
+  void save(std::string, bool);
+  
+  ////////////////////////////////////////////////////////////
+  // Draw the object onto the SFML RenderTarget (window)
+  ////////////////////////////////////////////////////////////
+  virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
+};
+#endif /* __MAP_H__ */
+
